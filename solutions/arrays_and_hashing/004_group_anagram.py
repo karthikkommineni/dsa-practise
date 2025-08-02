@@ -25,13 +25,13 @@ from typing import List
 
 class Solution:
     def groupAnagrams(self, strs: List[str]) -> List[List[str]]:
-        resultMap = defaultdict(list)
+        resultMap = defaultdict(list)   # Using defaultdict to simplify grouping
 
         for s in strs:
             count = [0] * 26  # frequency of characters a–z
             for c in s:
-                count[ord(c) - ord("a")] += 1
-            resultMap[tuple(count)].append(s)
+                count[ord(c) - ord("a")] += 1  # Increment frequency for character c
+            resultMap[tuple(count)].append(s)  # Use tuple of counts as key - as list is not hashable
 
         return list(resultMap.values())
 
@@ -42,6 +42,10 @@ class Solution:
 2. Convert it to a tuple to act as a hashable key.
 3. Use a hash map to group strings with the same key.
 4. Return the grouped anagram lists.
+
+Notes:
+# Python: dict.values() returns a view, not a list -> Use list(dict.values()) to convert to list
+# Java: map.values() returns a Collection, not a List -> Use new ArrayList<>(map.values()) to convert to List
 
 *****************************************
 """

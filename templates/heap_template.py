@@ -61,4 +61,32 @@ def kth_largest(nums, k):
   - Heapify: `O(n)`
   - Push/Pop: `O(log k)`
   - Kth largest: `O(n log k)`
+  
+
+✅ Python heapq Time Complexities
+
+heapq.heapify(list)
+- Converts a list to a valid heap
+- Time: O(n)
+
+heapq.heappush(heap, x)
+- Inserts an element into the heap
+- Time: O(log n)
+
+heapq.heappop(heap)
+- Removes and returns the smallest element
+- Time: O(log n)
+
+heapq.heappushpop(heap, x)
+- Pushes x, then pops and returns the smallest
+- Time: O(log n)
+
+heapq.nlargest(k, iterable)
+- Returns k largest elements
+- Time: O(n log k)
+
+heapq.nsmallest(k, iterable)
+- Returns k smallest elements
+- Time: O(n log k)
+
 """)

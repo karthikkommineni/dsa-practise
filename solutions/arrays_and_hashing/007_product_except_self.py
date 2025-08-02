@@ -21,21 +21,45 @@ To find the product of all elements except self without using division:
 from typing import List
 
 class Solution:
-    def productExceptSelf(self, nums: List[int]) -> List[int]:
-        res = [1]  # res[0] = 1 (no elements to the left)
+    class Solution:
+        def productExceptSelf_leftRightArr(self, nums: List[int]) -> List[int]:
+            # product  = left x right
+            # 1 2 4 6 -> 1, 1, 2, 6  * 48,24,6,1
 
-        # Pass 1: Prefix product from left
-        for i in range(1, len(nums)):
-            res.append(nums[i - 1] * res[i - 1])
+            left, right = [1] * len(nums), [1] * len(nums)
 
-        prod = 1  # right-side running product
+            # left products
+            for i in range(1, len(nums)):
+                left[i] = left[i - 1] * nums[i - 1]
 
-        # Pass 2: Multiply with suffix product from right
-        for i in range(len(nums) - 2, -1, -1):
-            prod *= nums[i + 1]
-            res[i] *= prod
+            # right producst
+            for j in range(len(nums) - 2, -1, -1):
+                right[j] = nums[j + 1] * right[j + 1]
 
-        return res
+            return [a * b for a, b in zip(left, right)]
+
+
+        def productExceptSelf_singleArr(self, nums: List[int]) -> List[int]:
+            n = len(nums)
+            res = [1] * n  # This will hold the final result
+
+            # Step 1: Fill res with left products
+            for i in range(1, n):
+                res[i] = res[i - 1] * nums[i - 1]
+
+            # Step 2: Multiply with right products on the fly
+            right = 1
+            for i in range(n - 1, -1, -1):
+                res[i] = res[i] * right
+                right *= nums[i]  # accumulate right product
+
+            return res
+
+    """
+    - idea : product is leftproduct * right product (alternate -single arr
+    - iteration always uses positive indices only 
+    """
+
 
 """
 ************** LOGIC ********************

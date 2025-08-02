@@ -76,13 +76,174 @@ all_substrings("ABC")  # A, AB, ABC, B, BC, C
     with st.expander("🎯 Built-in Functions & Shortcuts"):
         st.code("""
 # Enumerate
+my_list = ['apple', 'banana', 'cherry']
 for i, val in enumerate(my_list):
     print(i, val)
+# Output:
+# 0 apple
+# 1 banana
+# 2 cherry
 
 # List comprehension
-[x * 2 for x in range(5)]
+doubled = [x * 2 for x in range(5)]
+print(doubled)
+# Output: [0, 2, 4, 6, 8]
 
-# Map / Filter
-map(str, [1, 2, 3])
-filter(lambda x: x % 2 == 0, nums)
+# Map
+mapped = list(map(str, [1, 2, 3]))
+print(mapped)
+# Output: ['1', '2', '3']
+
+# Filter
+nums = [1, 2, 3, 4, 5, 6]
+evens = list(filter(lambda x: x % 2 == 0, nums))
+print(evens)
+# Output: [2, 4, 6]
+
+# Zip
+list1 = [1, 2, 3]
+list2 = ['a', 'b', 'c']
+for a, b in zip(list1, list2):
+    print(a, b)
+# Output:
+# 1 a
+# 2 b
+# 3 c
+-> Note: `zip` stops at the shortest input
 """, language="python")
+    with st.expander("🧠 Misc Interview Concepts"):
+        st.markdown("""
+### ✅ Topic 1: Why `sorted()` Needs `.join()`
+- `sorted(s)` returns a list → not usable as dict key.
+- Lists are mutable → unhashable.
+- `''.join(sorted(s))` creates an immutable string.
+- Strings are hashable → valid for dict keys.
+- Common use: grouping anagrams.
+
+### ✅ Topic 2: Why List Can’t Be a Key — Use `tuple`
+- Lists are mutable and unhashable.
+- Tuples are immutable and hashable.
+- Convert `[0]*26` to `tuple(...)` before using as dict key.
+- Used for grouping anagrams by character frequency.
+- Avoids runtime `TypeError`.
+
+### ✅ Topic 3: `defaultdict` vs `dict`
+- `dict` needs key check or initialization.
+- `defaultdict` provides default value automatically.
+- Prevents `KeyError` when accessing missing keys.
+- Ideal for grouping or counting.
+- Syntax: `defaultdict(list)`, `defaultdict(int)`, etc.
+
+### ✅ Topic 4: Shallow vs Deep Copy
+- Shallow copy shares nested objects.
+- Deep copy duplicates all levels.
+- `.copy()` vs `copy.deepcopy()`.
+- Shallow reflects changes in inner data.
+- Deep ensures full isolation.
+
+
+### ✅ Topic 5: What Are View Objects?
+- `.keys()`, `.values()`, `.items()` return **view objects**, not lists.
+- View objects reflect **live updates** in the dictionary.
+- They are **memory-efficient** because they don’t copy data.
+- You can iterate over them, but not index directly.
+- Wrap with `list()` if you need indexing or materialized copy.
+- for key,val in dict.items:   -> we can access key and value directly
+
+```python
+# Example:
+d = {'a': 1, 'b': 2}
+keys = d.keys()           # dict_keys(['a', 'b'])
+d['c'] = 3
+print(keys)               # dict_keys(['a', 'b', 'c'])  ← auto-updated
+print(list(d.items()))    # [('a', 1), ('b', 2), ('c', 3)]
+
+d = {'a': 1, 'b': 2}
+d.keys()        # → dict_keys(['a', 'b'])
+d.values()      # → dict_values([1, 2])
+d.items()       # → dict_items([('a', 1), ('b', 2)])
+
+
+d = {'a': 1, 'b': 2}
+
+for key, val in d.items():
+    print(key, val)
+# Output:
+# a 1
+# b 2
+
+### ✅ Topic 6: `dict.get()` method
+- Syntax: `dict.get(key, default)`
+- Returns value if key exists, else returns default (e.g. 0).
+- Helps avoid `KeyError` without if-checks.
+- Common in frequency/count problems.
+- Alternative to `defaultdict` when default is fixed.
+
+### ✅ Topic 7: `counter(num)` method
+- gets frequency of each element in a list.
+-From collections module.
+-Counts frequencies of elements.
+-Returns a dict-like object.
+-Supports most_common(), arithmetic, etc.
+- Cleaner alternative to manual counting.
+
+- example: 
+nums = [1, 2, 2, 3, 3, 3]
+count = Counter(nums)
+print(count)
+# Output: Counter({3: 3, 2: 2, 1: 1})
+
+Topic 7:Notes on `range(start, stop, step)`
+
+1️⃣ Default usage:
+   - `range(n)` ⇒ starts at 0, ends at n-1
+   - Example: `range(5)` → [0, 1, 2, 3, 4]
+
+2️⃣ Positive step:
+   - `range(2, 7, 1)` → [2, 3, 4, 5, 6]
+   - Iterates forward by +1 (or any +ve value)
+
+3️⃣ Negative step (reverse loop):
+   - `range(5, -1, -1)` → [5, 4, 3, 2, 1, 0]
+   - Stops **before** hitting -1
+
+4️⃣ Mixing positive with negative step gives empty result:
+   - `range(5, 10, -1)` → []  ❌ (won’t run because direction mismatch)
+
+5️⃣ Common patterns:
+   - Reverse iteration: `range(n-1, -1, -1)`
+   - Slicing last elements: use negative indices like `range(-1, -len(arr)-1, -1)`
+
+Topic 8: Python String Slicing: `s[start:stop:step]`
+
+1️⃣ Basic Substring Access:
+   - `s[i:j]` gives characters from index `i` up to (but not including) `j`.
+   - Example: `'abcdef'[1:4]` → `'bcd'`
+
+2️⃣ Step Parameter (`::step`):
+   - Skips characters by step size.
+   - Example: `'abcdef'[::2]` → `'ace'` (every 2nd character)
+   - Reverse a string: `'abcdef'[::-1]` → `'fedcba'`
+
+3️⃣ Common Mistake:
+   - `s[i::j]` is NOT the same as `s[i:j]`
+   - `s[i::j]` means → start at `i`, skip every `j` characters.
+   - Example: `'abcdef'[1::4]` → `'bf'`, not `'bcd'`
+
+4️⃣ Full Format:
+   - `s[start:stop:step]`
+   - Any of the three parts can be omitted.
+   - Defaults: `start=0`, `stop=len(s)`, `step=1`
+
+5️⃣ More Examples:
+   - `s = "abcdef"`
+   - `s[2:5:2]` → `'ce'`
+   - `s[:3]` → `'abc'`
+   - `s[3:]` → `'def'`
+   - `s[-3:]` → `'def'` (last 3 characters)
+
+✅ Use `s[i:j]` for substrings  
+✅ Use `s[::-1]` for reverse  
+❌ Avoid `s[i::j]` when trying to extract up to index `j`
+
+        """)

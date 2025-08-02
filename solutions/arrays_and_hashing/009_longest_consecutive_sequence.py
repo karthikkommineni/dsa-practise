@@ -22,18 +22,31 @@ This avoids sorting (which is O(N log N)) and ensures linear time.
 from typing import List
 
 class Solution:
+
     def longestConsecutive(self, nums: List[int]) -> int:
-        nums_set = set(nums)  # To enable O(1) lookup
+
+        seen = set(nums)
         max_len = 0
 
-        for num in nums:
-            if (num - 1) not in nums_set:  # Start of a new sequence
+        for i in range(len(nums)):
+            n = nums[i]
+            if n - 1 not in seen:
                 length = 1
-                while (num + length) in nums_set:
+                while n + length in seen:
                     length += 1
-                max_len = max(max_len, length)
+                max_len = max(length, max_len)
+            else:
+                continue
 
         return max_len
+
+    """
+    - The elements do not have to be consecutive in the original array - hence we can use hashing
+    - start count only if its frist num in seq - means n-1 wont exists
+    - count increase as long as next number  exists
+    - dont have to see it as one list - 
+    seq can number exist or not is enough logic
+    """
 
 """
 ************** LOGIC ********************
