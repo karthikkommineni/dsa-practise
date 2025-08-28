@@ -9,39 +9,49 @@ Space: O(1)   → Ignoring output list
 
 from typing import List
 
+
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
+        # target =0, i,j,k not equal, no duplicates in solution
         res = []
-        nums.sort()  # Sorting helps eliminate duplicates and apply 2-pointer
+        target = 0
+        nums.sort()  # brutefore -o(n3) - we want in n2 - sorted -o(nlogn)
 
-        for i, a in enumerate(nums):
-            if a > 0:
-                break  # Since array is sorted, no possible triplet after this
+        for i, n in enumerate(nums):
+            if n > 0:
+                break
+            # i>0 to avoid index out of range
+            if i and (nums[i] == nums[i - 1]):
+                continue
 
-            if i > 0 and a == nums[i - 1]:
-                continue  # Skip duplicate values for 'a'
+            j, k = i + 1, len(nums) - 1
 
-            l, r = i + 1, len(nums) - 1
-            while l < r:
-                threeSum = a + nums[l] + nums[r]
-
-                if threeSum > 0:
-                    r -= 1
-                elif threeSum < 0:
-                    l += 1
+            while j < k:
+                s = nums[j] + nums[k] + nums[i]
+                if s == 0:
+                    res.append([nums[i], nums[j], nums[k]])
+                    j += 1  # move
+                    k -= 1
+                    # skip duplicates on both sides
+                    while j < k and nums[j] == nums[j - 1]:
+                        j += 1
+                    while j < k and nums[k] == nums[k + 1]:
+                        k -= 1
+                elif s > 0:
+                    k -= 1
                 else:
-                    res.append([a, nums[l], nums[r]])
-                    l += 1
-                    r -= 1
-                    # Skip duplicate values for 'l'
-                    while l < r and nums[l] == nums[l - 1]:
-                        l += 1
+                    j += 1
 
         return res
 
+
 """
 *************** GENERAL IDEA ***************
-
+- at first place i - we calculate all possible two sums and check
+- next to second place - all possibe two sums and check
+- continue till loop ends
+    - in two sum - we skip duplicates
+- 
 Find all unique triplets in array that sum to zero using:
 1. Sorting
 2. Two-pointer scanning for each fixed first element

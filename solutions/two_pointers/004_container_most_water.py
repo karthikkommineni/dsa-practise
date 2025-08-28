@@ -9,25 +9,43 @@ Space: O(1) → Constant space
 
 from typing import List
 
+
 class Solution:
-    def maxArea(self, h: List[int]) -> int:
+    def maxArea(self, heights: List[int]) -> int:
+        # heights of bars, max vol - max(length of short bar out of two x width)
 
-        # v = (r - l) * min(h[l], h[r])
-        # Always move the shorter line inward
-
+        l, r = 0, len(heights) - 1
         max_vol = 0
-        l, r = 0, len(h) - 1
 
         while l < r:
-            min_h = min(h[l], h[r])
-            max_vol = max(max_vol, (r - l) * min_h)
-
-            if min_h == h[r]:
-                r -= 1
-            else:
+            vol = min(heights[l], heights[r]) * (r - l)
+            if heights[l] < heights[r]:  # only changin shorter length can increase vol
+                curr_height = heights[l]
                 l += 1
-
+                # while l < r and heights[l] <= curr_height:  micro optimized
+                #     l += 1
+            else:
+                curr_height = heights[r]
+                r -= 1
+                # while l < r and heights[r] <= curr_height:
+                #     r -= 1
+            max_vol = max(vol, max_vol)
         return max_vol
+
+    # vol - 1*7, max - 7 - l+
+
+
+# vol - 6*6 max -36 - r-,r-
+
+
+"""
+-bf, optz, edge,dryrun
+- bf - o(n2) - eliminate few case with two pointer
+- move pointer on shorter side because potential to increase 
+vol by decreasing width is when height is more
+- search for taller height
+
+"""
 
 """
 *************** GENERAL IDEA ***************

@@ -169,8 +169,9 @@ d = {'a': 1, 'b': 2}
 for key, val in d.items():
     print(key, val)
 # Output:
-# a 1
-# b 2
+a1
+b2
+```
 
 ### ✅ Topic 6: `dict.get()` method
 - Syntax: `dict.get(key, default)`
