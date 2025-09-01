@@ -1,0 +1,70 @@
+Context:
+I am preparing for software engineering interviews (LeetCode, system design, etc.).
+For coding problems, I want a single Python file that I can keep in GitHub for revision.
+The file should include:
+- My provided code (logic must remain unchanged unless I explicitly ask for optimization).
+- Inline comments if possible to the side explaining the key steps for clarity. I like to see code
+concise because my mind works better that way.
+- At the end, a triple-quoted "Quick Revision Notes" section that summarizes:
+   - Trigger Thought (a short, simple recall phrase to spark the idea for the solution)
+   - Logic Idea (step-by-step approach in plain words)
+   - Why it works (the reasoning behind the approach)
+   - Complexity (time and space)
+   - Pitfalls (common mistakes or edge cases to watch out for)
+
+Instructions:
+- Always keep Trigger Thought short and easy to remember (like something I would tell myself quickly before solving).
+- Make comments and notes concise, not verbose, but accurate.
+- Do not add testing code unless I request it.
+- Stick to one `.py` file only.
+- give a java solution at end (just as reference) with short comments- just so my mind thinks in both languages
+
+Constraints:
+- Must use my provided code structure (don’t reformat too much).
+- Only enhance with comments and revision notes.
+- Keep output clean and professional (so I can commit directly to GitHub).
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+class Solution:
+    def kthSmallest(self, root: Optional[TreeNode], k: int) -> int:
+        self.counter = 0
+        self.res = 0
+        self.dfs(root)
+        return self.res
+
+
+    def dfs(self,node):
+        if node is None:
+            return
+        self.dfs(node.left)
+        self.counter+=1
+        if(self.counter == k):
+            self.res = node.val
+            return
+        self.dfs(node.right)
+
+
+
+
+
+
+
+"""
+- in order
+- c
+
+if root none - return
+dfs(left)
+c +=1
+dfs(right)
+
+
+
+"""
+
+        
